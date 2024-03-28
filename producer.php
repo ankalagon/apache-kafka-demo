@@ -10,7 +10,7 @@ require_once 'vendor/autoload.php';
 $vendor = $argv[1] ?? null;
 $topic = $argv[2] ?? null;
 if (!$topic || !$vendor) {
-    echo 'usage php %s vendor topic_name number_of_messages'.PHP_EOL;
+    echo sprintf('usage php %s vendor topic_name number_of_messages'.PHP_EOL, __FILE__);
     die();
 }
 
