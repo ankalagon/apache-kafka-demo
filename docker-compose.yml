@@ -12,6 +12,7 @@ services:
       - '.:/app'
     environment:
       COMPOSER_ALLOW_SUPERUSER: 1
+      KAFKA_BOOTSTRAP_HOST: kafka
     networks:
       - kafka-network
   kafka-ui:
@@ -63,3 +64,6 @@ services:
       - '6379:6379'
     networks:
       - kafka-network
+    depends_on:
+      - kafka
+      - app

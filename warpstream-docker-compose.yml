@@ -1,0 +1,69 @@
+networks:
+  kafka-network:
+
+services:
+  app:
+    container_name: kafka-app
+    build:
+      dockerfile: ./Dockerfile
+    depends_on:
+      - warp
+    volumes:
+      - '.:/app'
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: 1
+      KAFKA_BOOTSTRAP_HOST: warp
+    networks:
+      - kafka-network
+  warp:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    command:
+      - playground
+      - -advertiseHostnameStrategy
+      - custom
+      - -advertiseHostnameCustom
+      - warp
+      #- -bucketURL
+      #- mem://my_memory_bucket
+    environment:
+      # this is a no-op as it will default on the custom advertised hostname defined above, but you can change this if you want to use a different hostname with Kafka
+      - WARPSTREAM_DISCOVERY_KAFKA_HOSTNAME_OVERRIDE=warp
+    healthcheck:
+      # Wait for the Agent to finish setting up the demo before marking it as healthy
+      # to delay the diagnose-connection command from running for a few seconds.
+      test: ["CMD", "sh", "-c", "sleep 10"]
+      interval: 5s
+      timeout: 15s
+      retries: 5
+    networks:
+      - kafka-network
+
+  warp-diagnose:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    command:
+      - kcmd
+      - -bootstrap-host
+      - warp
+      - -type
+      - diagnose-connection
+    depends_on:
+      warp:
+        condition: service_healthy
+    networks:
+      - kafka-network
+
+  warp-create-topic:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    command:
+      - kcmd
+      - -bootstrap-host
+      - warp
+      - -type
+      - create-topic
+      - -topic
+      - docker-compose-test-topic
+    depends_on:
+      warp:
+        condition: service_healthy
+    networks:
+      - kafka-network

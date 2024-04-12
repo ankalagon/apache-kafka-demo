@@ -1,7 +1,11 @@
 # KAFKA DEMO
 
 # how to start?
+There are two types of setup this demo
+- [Apache kafka](https://kafka.apache.org/)
+- [WarpStream](https://www.warpstream.com/) - fully Apache Kafka compatible streaming platform 
 
+## Apache Kafka
 ```bash
 docker-composer up
 ```
@@ -14,15 +18,19 @@ builds and run 4 container, ready to go.
 
 `kafka-app` - container with code examples
 
-`kafka-demo-redis` - container with redis
+`redis` - container with redis
 
+## WarpStream
 
-# working with kafka
+```bash
+docker-compose -f warpstream-docker-compose.yml up
+```
 
+# working with Kafka/WarpStream
 
 ### create topic
 You dont need to create kafka topic, because as part of a demo topic will be created automatically.
-Buy if you want to create kafka topic by hand you can use:
+Buy if you want to create kafka topic by hand you can use (only available for APache Kafka testing, not for WarpStream):
 ```bash
 docker exec -it kafka /opt/kafka/bin/kafka-topics.sh --create --partitions 10 --topic topic-1 --bootstrap-server localhost:9092
 ```

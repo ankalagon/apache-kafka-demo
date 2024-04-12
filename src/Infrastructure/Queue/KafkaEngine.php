@@ -62,8 +62,8 @@ class KafkaEngine implements Engine
     private function initProducer()
     {
         $conf = new \RdKafka\Conf();
-        $conf->set('log_level', (string)LOG_DEBUG);
-        $conf->set('bootstrap.servers', 'kafka:9092');
+        $conf->set('log_level', (string) LOG_DEBUG);
+        $conf->set('bootstrap.servers', sprintf('%s:9092', getenv('KAFKA_BOOTSTRAP_HOST')));
         $conf->set('queue.buffering.max.kbytes', 10000000);
 
         $this->producer = new \RdKafka\Producer($conf);
