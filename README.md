@@ -4,27 +4,34 @@
 There are two types of setup this demo
 - [Apache kafka](https://kafka.apache.org/)
 - [WarpStream](https://www.warpstream.com/) - fully Apache Kafka compatible streaming platform 
+- [Confluent Kafka](https://www.confluent.io/product/confluent-platform/) - Complete, enterprise-grade distribution of Apache Kafka
 
 ## Apache Kafka
 ```bash
 docker-composer up
 ```
 
-builds and run 4 container, ready to go. 
-
-`kafka` - container with kafka broken
-
-`kafka-ui` - container with Kafka UI - http://localhost:8888
-
-`kafka-app` - container with code examples
-
-`redis` - container with redis
-
 ## WarpStream
 
 ```bash
 docker-compose -f warpstream-docker-compose.yml up
 ```
+
+## Confluent Kafka
+
+```bash
+docker-compose -f confluent-docker-compose.yml up
+```
+
+## What do we have?
+In all cases there are at least 3 containers:
+
+`kafka-ui` - container with Kafka UI - http://localhost:8888
+
+`kafka-app` - container with code examples
+
+and container related to warpstream-agent or kafka broker
+
 
 # working with Kafka/WarpStream
 
