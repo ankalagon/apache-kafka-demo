@@ -15,7 +15,6 @@ RUN apk add --update linux-headers --update-cache --virtual .build-deps ${PHPIZE
 
 RUN docker-php-ext-enable redis rdkafka zip
 RUN apk add git
-ENV COMPOSER_HOME /.composer
 COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 COPY .docker/php.ini $PHP_INI_DIR/php.ini
 COPY .docker/php/*.ini $PHP_INI_DIR/conf.d/
@@ -23,6 +22,9 @@ COPY . /app
 
 WORKDIR /app
 
-RUN composer install
+RUN chown -R www-data:www-data /app
+USER www-data
+
+RUN composer -v install
 
 CMD ["sleep", "infinity"]
